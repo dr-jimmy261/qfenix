@@ -2,10 +2,11 @@ QDL := qfenix
 VERSION := $(or $(VERSION), $(shell git describe --always --tags 2>/dev/null), "unknown-version")
 
 PKG_CONFIG ?= pkg-config
-CFLAGS += -O2 -Wall -g `$(PKG_CONFIG) --cflags libxml-2.0 libusb-1.0`
-LDFLAGS += `$(PKG_CONFIG) --libs libxml-2.0 libusb-1.0`
+CFLAGS += -O2 -Wall -g `$(PKG_CONFIG) --cflags --static libxml-2.0 libusb-1.0`
 ifeq ($(OS),Windows_NT)
-LDFLAGS += -lws2_32 -lsetupapi
+LDFLAGS += `$(PKG_CONFIG) --libs --static libxml-2.0 libusb-1.0` -lws2_32 -lsetupapi -static
+else
+LDFLAGS += `$(PKG_CONFIG) --libs libxml-2.0 libusb-1.0`
 endif
 prefix := /usr/local
 

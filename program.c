@@ -46,7 +46,7 @@ static int load_erase_tag(xmlNode *node, bool is_nand)
 
 	program->sector_size = attr_as_unsigned(node, "SECTOR_SIZE_IN_BYTES", &errors);
 	program->num_sectors = attr_as_unsigned(node, "num_partition_sectors", &errors);
-	program->partition = attr_as_unsigned(node, "physical_partition_number", &errors);
+	program->partition = 0;      // default Qualcomm
 	program->start_sector = attr_as_string(node, "start_sector", &errors);
 	if (is_nand) {
 		program->pages_per_block = attr_as_unsigned(node, "PAGES_PER_BLOCK", &errors);
@@ -179,7 +179,7 @@ static int load_program_tag(xmlNode *node, bool is_nand, bool allow_missing, con
 	program->filename = attr_as_string(node, "filename", &errors);
 	normalize_path((char *)program->filename);
 	program->num_sectors = attr_as_unsigned(node, "num_partition_sectors", &errors);
-	program->partition = attr_as_unsigned(node, "physical_partition_number", &errors);
+	program->partition = 0;      // default Qualcomm
 	program->start_sector = attr_as_string(node, "start_sector", &errors);
 
 	/* Label is optional - use filename as fallback */
