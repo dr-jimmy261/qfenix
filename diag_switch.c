@@ -142,7 +142,8 @@ static int detect_diag_port_win(char *port_buf, size_t buf_size,
 			 * No VID_ in hardware ID — likely a PCIe/MHI device.
 			 * Fall back to matching by friendly name keywords.
 			 */
-			if (!is_qualcomm_modem_name(friendlyName))
+			if (!is_known_pcie_hwid(hwid) &&
+			    !is_qualcomm_modem_name(friendlyName))
 				continue;
 			is_known_vendor = 1;
 		}

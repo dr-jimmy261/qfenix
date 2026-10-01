@@ -227,7 +227,7 @@ QFenix includes a VID/PID database for automatic detection of:
 - **Sierra Wireless** (EM74xx, EM9190, EM9191, EM9291)
 - **Telit** (LM960, FN980, FN990, FM990, LE910C4)
 - **Fibocom** (FM150, FM160)
-- **Foxconn/Dell** (DW5820e, DW5930e, DW5931e, DW5934e / T99W175, T99W373, T99W640)
+- **Foxconn/Dell** (DW5820e, DW5930e, DW5931e, DW5932e, DW5934e / T99W175, T99W373, T99W640)
 - **Simcom** (SIM8200EA, SIM8380G)
 - **MeiG Smart** (SRM825, SRM930)
 - **Sony, ZTE, LG, Netgear, Huawei** EDL/DIAG devices

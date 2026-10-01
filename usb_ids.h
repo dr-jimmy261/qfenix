@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 
 #ifndef ARRAY_SIZE
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
@@ -42,6 +44,20 @@ static const struct edl_id edl_ids[] = {
 	{ 0x19d2, 0x0076 },
 	/* LG */
 	{ 0x1004, 0x61a1 },	/* LG memory debug */
+};
+
+/*
+ * PCIe vendor/device identifiers for MHI-based Qualcomm modems.
+ * Windows exposes these as PCI\\VEN_xxxx&DEV_xxxx hardware IDs.
+ */
+struct pcie_id {
+	uint16_t vendor;
+	uint16_t device;
+};
+
+static const struct pcie_id pcie_ids[] = {
+	{ 0x105b, 0xe0ab },	/* Dell DW5930e / Foxconn T99W175 (SDX55) */
+	{ 0x105b, 0xe0f5 },	/* Dell DW5932e / Foxconn T99W373 (SDX62) */
 };
 
 /*
@@ -154,6 +170,39 @@ static inline bool is_edl_device(uint16_t vid, uint16_t pid)
 			return true;
 	}
 	return false;
+}
+
+static inline bool is_pcie_device(uint16_t vendor, uint16_t device)
+{
+	size_t i;
+
+	for (i = 0; i < ARRAY_SIZE(pcie_ids); i++) {
+		if (pcie_ids[i].vendor == vendor &&
+		    pcie_ids[i].device == device)
+			return true;
+	}
+	return false;
+}
+
+static inline bool is_known_pcie_hwid(const char *hwid)
+{
+	const char *vendor_str;
+	const char *device_str;
+	uint16_t vendor;
+	uint16_t device;
+
+	vendor_str = strstr(hwid, "VEN_");
+	if (!vendor_str)
+		vendor_str = strstr(hwid, "ven_");
+	device_str = strstr(hwid, "DEV_");
+	if (!device_str)
+		device_str = strstr(hwid, "dev_");
+	if (!vendor_str || !device_str)
+		return false;
+
+	vendor = (uint16_t)strtoul(vendor_str + 4, NULL, 16);
+	device = (uint16_t)strtoul(device_str + 4, NULL, 16);
+	return is_pcie_device(vendor, device);
 }
 
 static inline bool is_diag_vendor(uint16_t vid)

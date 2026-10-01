@@ -20,6 +20,7 @@
 
 #include "qdl.h"
 #include "pcie.h"
+#include "usb_ids.h"
 
 #ifdef __linux__
 #include <poll.h>
@@ -484,10 +485,11 @@ static int pcie_detect_edl_port_win(char *port_buf, size_t buf_size)
 			if (!is_edl_device(vid, pid))
 				continue;
 		} else {
-			/* PCIe/MHI: must have EDL keyword + modem name */
+			/* PCIe/MHI: require EDL plus a known ID or modem name. */
 			if (!strstr(friendlyName, "EDL"))
 				continue;
-			if (!is_qc_modem_name(friendlyName))
+			if (!is_known_pcie_hwid(hwid) &&
+			    !is_qc_modem_name(friendlyName))
 				continue;
 		}
 

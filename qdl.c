@@ -33,6 +33,7 @@
 #include "version.h"
 #include "atcmd.h"
 #include "at_port.h"
+#include "usb_ids.h"
 
 #ifdef HAVE_QCSERIALD
 #include "qcseriald.h"
@@ -1061,7 +1062,8 @@ static int list_com_ports(FILE *out)
 		} else {
 			/* PCIe/MHI device — check friendly name */
 			if (is_edl_name_list(friendlyName) &&
-			    is_qc_modem_name_list(friendlyName)) {
+			    (is_known_pcie_hwid(hwid) ||
+			     is_qc_modem_name_list(friendlyName))) {
 				is_edl = 1;
 				bus = "PCIe";
 			}
@@ -1136,7 +1138,8 @@ static int list_com_ports(FILE *out)
 			bus = "USB";
 		} else {
 			/* PCIe/MHI device — check friendly name */
-			if (!is_qc_modem_name_list(friendlyName))
+			if (!is_known_pcie_hwid(hwid) &&
+			    !is_qc_modem_name_list(friendlyName))
 				continue;
 			/* Skip EDL ports (already listed above) */
 			if (is_edl_name_list(friendlyName))
@@ -1219,7 +1222,8 @@ static int list_com_ports(FILE *out)
 				continue;
 			bus = "USB";
 		} else {
-			if (!is_qc_modem_name_list(friendlyName))
+			if (!is_known_pcie_hwid(hwid) &&
+			    !is_qc_modem_name_list(friendlyName))
 				continue;
 			if (is_edl_name_list(friendlyName))
 				continue;
