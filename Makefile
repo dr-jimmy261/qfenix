@@ -6,7 +6,7 @@ CFLAGS += -O2 -Wall -g `$(PKG_CONFIG) --cflags --static libxml-2.0 libusb-1.0`
 ifeq ($(OS),Windows_NT)
 LDFLAGS += `$(PKG_CONFIG) --libs --static libxml-2.0 libusb-1.0` -lws2_32 -lsetupapi -static
 else
-LDFLAGS += `$(PKG_CONFIG) --libs libxml-2.0 libusb-1.0`
+LDFLAGS += `$(PKG_CONFIG) --libs --static libxml-2.0` `$(PKG_CONFIG) --libs libusb-1.0`
 endif
 prefix := /usr/local
 
