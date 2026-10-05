@@ -38,6 +38,8 @@ static const struct edl_id edl_ids[] = {
 	{ 0x1199, 0x9062 },
 	{ 0x1199, 0x9070 },	/* EM74xx/MC74xx EDL */
 	{ 0x1199, 0x9090 },	/* EM9xxx/5G EDL */
+	/* Foxconn / Dell */
+	{ 0x105b, 0xe0f5 },	/* DW5932e / T99W373 USB QDLoader */
 	/* Netgear */
 	{ 0x0846, 0x68e0 },
 	/* ZTE */
